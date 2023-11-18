@@ -1,0 +1,1173 @@
+  [1m[35m (241.9ms)[0m  [1m[35mCREATE DATABASE "dhatri_care_development" ENCODING = 'unicode'[0m
+  [1m[35m (85.9ms)[0m  [1m[35mCREATE DATABASE "dhatri_care_test" ENCODING = 'unicode'[0m
+  [1m[35m (30.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (10.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20231114115626)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "first_name" character varying, "last_name" character varying, "email" character varying, "phone" character varying, "address_line1" character varying, "address_line2" character varying, "state" character varying, "city" character varying, "postal_code" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (2.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231114115626"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (3.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2023-11-14 12:02:43.333769"], ["updated_at", "2023-11-14 12:02:43.333769"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (5.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddConfirmableToUsers (20231114122136)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.2ms)[0m  [1m[35mALTER TABLE "users" ADD "confirmation_token" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "confirmed_at" timestamp[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" ADD "confirmation_sent_at" timestamp[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "users" ADD "unconfirmed_email" character varying[0m
+  [1m[35m (4.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_confirmation_token" ON "users" ("confirmation_token")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231114122136"]]
+  [1m[36mTRANSACTION (2.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (3.7ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (4.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO "users" ("email", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["email", "test@test.com"], ["created_at", "2023-11-14 12:24:50.527084"], ["updated_at", "2023-11-14 12:24:50.527084"], ["confirmation_token", "BtbzWFq2xHsFASrxNrEG"], ["confirmation_sent_at", "2023-11-14 12:24:50.527361"]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+Devise::Mailer#confirmation_instructions: processed outbound mail in 31.5ms
+Started GET "/api/v1/users" for 127.0.0.1 at 2023-11-14 17:59:08 +0530
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::UsersController#show as HTML
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 2304)
+
+
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" /* loading for inspect */ LIMIT $1[0m  [["LIMIT", 11]]
+Started GET "/api/v1/users" for 127.0.0.1 at 2023-11-14 18:00:03 +0530
+Processing by Api::V1::UsersController#show as HTML
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 81)
+
+
+Started GET "/api/v1/user" for 127.0.0.1 at 2023-11-14 18:00:26 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/user"):
+  
+Started GET "/favicon.ico" for 127.0.0.1 at 2023-11-14 18:00:26 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/api/v1/users/1" for 127.0.0.1 at 2023-11-14 18:03:47 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users/1"):
+  
+Started GET "/api/v1/users" for 127.0.0.1 at 2023-11-14 18:03:59 +0530
+Processing by Api::V1::UsersController#show as HTML
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.0ms | Allocations: 147)
+
+
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:07:07 +0530
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::UsersController#show as */*
+Completed 200 OK in 21ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 2309)
+
+
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:07:17 +0530
+Processing by Api::V1::UsersController#show as */*
+Completed 200 OK in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 89)
+
+
+  [1m[36mUser Load (2.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /* loading for inspect */ LIMIT $1[0m  [["LIMIT", 11]]
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:10:20 +0530
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::UsersController#show as */*
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.1ms)
+Completed 200 OK in 16ms (Views: 9.9ms | ActiveRecord: 0.0ms | Allocations: 4522)
+
+
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:10:21 +0530
+Processing by Api::V1::UsersController#show as */*
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.09ms)
+Completed 200 OK in 1ms (Views: 0.9ms | ActiveRecord: 0.0ms | Allocations: 249)
+
+
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:10:22 +0530
+Processing by Api::V1::UsersController#show as */*
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.06ms)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.0ms | Allocations: 249)
+
+
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:10:23 +0530
+Processing by Api::V1::UsersController#show as */*
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.11ms)
+Completed 200 OK in 1ms (Views: 0.9ms | ActiveRecord: 0.0ms | Allocations: 249)
+
+
+Started GET "/api/v1/users/" for ::1 at 2023-11-14 18:10:44 +0530
+Processing by Api::V1::UsersController#show as */*
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.07ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.0ms | Allocations: 245)
+
+
+Started GET "/api/v1/users/1" for ::1 at 2023-11-14 18:12:51 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users/1"):
+  
+Started GET "/api/v1/users/2" for ::1 at 2023-11-14 18:13:04 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users/2"):
+  
+Started GET "/api/v1/users/2" for ::1 at 2023-11-14 18:16:04 +0530
+  [1m[35m (7.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users/2"):
+  
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:16:09 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users"):
+  
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:18:30 +0530
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::UsersController#show as */*
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.13ms)
+Completed 200 OK in 16ms (Views: 6.7ms | ActiveRecord: 0.0ms | Allocations: 3530)
+
+
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:18:55 +0530
+Processing by Api::V1::UsersController#show as */*
+  Parameters: {"user"=>{}}
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.06ms)
+Completed 200 OK in 2ms (Views: 0.7ms | ActiveRecord: 2.4ms | Allocations: 248)
+
+
+Started GET "/api/v1/users" for ::1 at 2023-11-14 18:18:56 +0530
+Processing by Api::V1::UsersController#show as */*
+  Parameters: {"user"=>{}}
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.07ms)
+Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.0ms | Allocations: 249)
+
+
+Started GET "/api/v1/users/1" for ::1 at 2023-11-14 18:18:59 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users/1"):
+  
+Started GET "/api/v1/user/1" for ::1 at 2023-11-14 18:19:04 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/user/1"):
+  
+Started GET "/api/v1/users/1" for ::1 at 2023-11-14 18:19:08 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users/1"):
+  
+Started GET "/api/v1/users/1" for ::1 at 2023-11-14 18:19:08 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/users/1"):
+  
+Started GET "/v1/users/1" for ::1 at 2023-11-14 18:19:17 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/v1/users/1"):
+  
+Started GET "/v1/users/1" for ::1 at 2023-11-14 18:20:01 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/v1/users/1"):
+  
+Started GET "/v1/users" for ::1 at 2023-11-14 18:20:04 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/v1/users"):
+  
+Started GET "/v1/users" for ::1 at 2023-11-14 18:20:18 +0530
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActionController::RoutingError (No route matches [GET] "/v1/users"):
+  
+Started GET "/v1/users" for ::1 at 2023-11-14 18:20:20 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/v1/users"):
+  
+Started GET "/api/users" for ::1 at 2023-11-14 18:20:33 +0530
+Processing by Api::UsersController#show as */*
+  Parameters: {"user"=>{}}
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.09ms)
+Completed 200 OK in 26ms (Views: 17.7ms | ActiveRecord: 1.7ms | Allocations: 3507)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 18:20:42 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"user"=>{}}
+Completed 400 Bad Request in 1ms (ActiveRecord: 0.0ms | Allocations: 131)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: user):
+  
+app/controllers/api/users_controller.rb:45:in `user_params'
+app/controllers/api/users_controller.rb:15:in `create'
+Started POST "/api/users/" for ::1 at 2023-11-14 18:20:44 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"user"=>{}}
+Completed 400 Bad Request in 2ms (ActiveRecord: 0.0ms | Allocations: 122)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: user):
+  
+app/controllers/api/users_controller.rb:45:in `user_params'
+app/controllers/api/users_controller.rb:15:in `create'
+Started POST "/api/users/1" for ::1 at 2023-11-14 18:20:47 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/api/users/1"):
+  
+Started POST "/api/users/1" for ::1 at 2023-11-14 18:21:27 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/api/users/1"):
+  
+Started GET "/api/users/1" for ::1 at 2023-11-14 18:21:32 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/users/1"):
+  
+Started GET "/api/users" for ::1 at 2023-11-14 18:21:37 +0530
+Processing by Api::UsersController#show as */*
+  Parameters: {"id"=>"1", "user"=>{"id"=>"1"}}
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.1ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.0ms | Allocations: 237)
+
+
+Started GET "/api/users" for ::1 at 2023-11-14 18:23:33 +0530
+  [1m[35m (3.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActionController::RoutingError (No route matches [GET] "/api/users"):
+  
+Started GET "/api/users" for ::1 at 2023-11-14 18:42:35 +0530
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::UsersController#index as */*
+  Parameters: {"id"=>"1", "user"=>{"id"=>"1"}}
+  [1m[36mUser Load (4.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:5:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (1.22ms)
+Completed 200 OK in 42ms (Views: 27.8ms | ActiveRecord: 9.3ms | Allocations: 13119)
+
+
+Started GET "/api/users/1" for ::1 at 2023-11-14 18:42:45 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/users/1"):
+  
+Started GET "/api/users/1" for ::1 at 2023-11-14 18:43:21 +0530
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::UsersController#show as */*
+  Parameters: {"id"=>"1", "user"=>{"id"=>"1"}}
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.12ms)
+Completed 200 OK in 14ms (Views: 6.8ms | ActiveRecord: 3.5ms | Allocations: 3510)
+
+
+Started GET "/api/users/1" for ::1 at 2023-11-14 18:44:21 +0530
+  
+SyntaxError (/Users/rajesh/External_proje/dhatri_care/app/controllers/api/users_controller.rb:2: syntax error, unexpected tIDENTIFIER, expecting end
+  before_action :set_user only:[:show, :update, :destroy]
+                          ^~~~):
+  
+app/controllers/api/users_controller.rb:2: syntax error, unexpected tIDENTIFIER, expecting end
+app/controllers/api/users_controller.rb:2: syntax error, unexpected tIDENTIFIER, expecting end
+Started GET "/api/users/1" for ::1 at 2023-11-14 18:44:31 +0530
+Processing by Api::UsersController#show as */*
+  Parameters: {"id"=>"1", "user"=>{"id"=>"1"}}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:43:in `set_user'
+[active_model_serializers] Rendered UserSerializer with ActiveModelSerializers::Adapter::Attributes (0.49ms)
+Completed 200 OK in 48ms (Views: 7.8ms | ActiveRecord: 8.8ms | Allocations: 10123)
+
+
+Started GET "/api/users/" for ::1 at 2023-11-14 18:44:35 +0530
+Processing by Api::UsersController#index as */*
+  Parameters: {"id"=>"1", "user"=>{"id"=>"1"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.33ms)
+Completed 200 OK in 25ms (Views: 23.9ms | ActiveRecord: 0.5ms | Allocations: 982)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 18:46:25 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:19:in `create'
+  [1m[36mUser Exists? (3.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+2@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:19:in `create'
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:19:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (11.69ms)
+Completed 422 Unprocessable Entity in 72ms (Views: 17.4ms | ActiveRecord: 17.0ms | Allocations: 12286)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 18:46:47 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+Completed 500 Internal Server Error in 21ms (ActiveRecord: 4.3ms | Allocations: 9053)
+
+
+  
+NameError (undefined local variable or method `user' for #<Api::UsersController:0x007fcfc3cd7450>
+Did you mean?  @user):
+  
+app/controllers/api/users_controller.rb:18:in `create'
+Started POST "/api/users/" for ::1 at 2023-11-14 18:47:39 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mTRANSACTION (4.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (2.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+2@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Create (46.7ms)[0m  [1m[32mINSERT INTO "users" ("email", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["email", "test+2@gmail.com"], ["created_at", "2023-11-14 13:17:40.104786"], ["updated_at", "2023-11-14 13:17:40.104786"], ["confirmation_token", "zY1Saz1VJ8jgCyayUkuZ"], ["confirmation_sent_at", "2023-11-14 13:17:40.105073"]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (2.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  Rendering /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb
+  Rendered /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb (Duration: 5.1ms | Allocations: 811)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 57.1ms
+Delivered mail 6553737441ee8_f2323fe7e1cda0ec19996@RK-Mac.local.mail (49.1ms)
+Date: Tue, 14 Nov 2023 18:47:40 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: test+2@gmail.com
+Message-ID: <6553737441ee8_f2323fe7e1cda0ec19996@RK-Mac.local.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome test+2@gmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=zY1Saz1VJ8jgCyayUkuZ">Confirm my account</a></p>
+
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Class (0.06ms)
+Completed 201 Created in 252ms (Views: 1.1ms | ActiveRecord: 62.0ms | Allocations: 33107)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 18:47:56 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+2@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+Completed 500 Internal Server Error in 19ms (ActiveRecord: 4.3ms | Allocations: 9698)
+
+
+  
+NoMethodError (undefined method `errors' for nil:NilClass):
+  
+app/controllers/api/users_controller.rb:20:in `create'
+Started POST "/api/users/" for ::1 at 2023-11-14 18:48:08 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+2@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (0.64ms)
+Completed 422 Unprocessable Entity in 20ms (Views: 1.5ms | ActiveRecord: 3.9ms | Allocations: 10113)
+
+
+Started GET "/api/users/" for ::1 at 2023-11-14 18:48:16 +0530
+Processing by Api::UsersController#index as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.55ms)
+Completed 200 OK in 30ms (Views: 29.1ms | ActiveRecord: 0.3ms | Allocations: 5014)
+
+
+Started GET "/api/users/" for ::1 at 2023-11-14 18:49:42 +0530
+Processing by Api::UsersController#index as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.84ms)
+Completed 200 OK in 17ms (Views: 14.5ms | ActiveRecord: 3.7ms | Allocations: 8602)
+
+
+Started GET "/api/users/1" for ::1 at 2023-11-14 18:49:51 +0530
+Processing by Api::UsersController#show as */*
+  Parameters: {"email"=>"test+2@gmail.com", "id"=>"1", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:41:in `set_user'
+[active_model_serializers] Rendered UserSerializer with ActiveModelSerializers::Adapter::Attributes (0.26ms)
+Completed 200 OK in 24ms (Views: 21.0ms | ActiveRecord: 0.6ms | Allocations: 925)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 18:51:38 +0530
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+2@gmail.com", "user"=>{"email"=>"test+2@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+2@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (13.77ms)
+Completed 422 Unprocessable Entity in 55ms (Views: 16.7ms | ActiveRecord: 7.1ms | Allocations: 16943)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 18:51:43 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+3@gmail.com", "user"=>{"email"=>"test+3@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+3@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Create (5.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["email", "test+3@gmail.com"], ["created_at", "2023-11-14 13:21:43.343897"], ["updated_at", "2023-11-14 13:21:43.343897"], ["confirmation_token", "3ErA_26m7qW6Tx_ssw4P"], ["confirmation_sent_at", "2023-11-14 13:21:43.345279"]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (2.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  Rendering /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb
+  Rendered /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb (Duration: 3.7ms | Allocations: 625)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 34.3ms
+Delivered mail 6553746786285_f4673fdfaf6656c4236e4@RK-Mac.local.mail (21.0ms)
+Date: Tue, 14 Nov 2023 18:51:43 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: test+3@gmail.com
+Message-ID: <6553746786285_f4673fdfaf6656c4236e4@RK-Mac.local.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome test+3@gmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=3ErA_26m7qW6Tx_ssw4P">Confirm my account</a></p>
+
+[active_model_serializers] Rendered UserSerializer with ActiveModelSerializers::Adapter::Attributes (0.84ms)
+Completed 201 Created in 270ms (Views: 14.1ms | ActiveRecord: 8.5ms | Allocations: 48177)
+
+
+Started GET "/users/confirmation?confirmation_token=[FILTERED]" for 127.0.0.1 at 2023-11-14 18:51:46 +0530
+Processing by Devise::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"[FILTERED]"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_token" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["confirmation_token", "3ErA_26m7qW6Tx_ssw4P"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (2.8ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-11-14 13:21:46.059453"], ["confirmed_at", "2023-11-14 13:21:46.059136"], ["id", 3]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/users/sign_in
+Completed 302 Found in 16ms (ActiveRecord: 3.8ms | Allocations: 4157)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2023-11-14 18:51:46 +0530
+Processing by Devise::SessionsController#new as HTML
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 763)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 18:57:59 +0530
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+4@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Create (0.9ms)[0m  [1m[32mINSERT INTO "users" ("email", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["email", "test+4@gmail.com"], ["created_at", "2023-11-14 13:27:59.653127"], ["updated_at", "2023-11-14 13:27:59.653127"], ["confirmation_token", "myMZkSg_5FQ2DGCAbtCc"], ["confirmation_sent_at", "2023-11-14 13:27:59.655184"]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (2.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  Rendering /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb
+  Rendered /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb (Duration: 2.5ms | Allocations: 625)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 26.2ms
+Delivered mail 655375dfbfeb2_f5c83fc7ea9d575033885@RK-Mac.local.mail (13.2ms)
+Date: Tue, 14 Nov 2023 18:57:59 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: test+4@gmail.com
+Message-ID: <655375dfbfeb2_f5c83fc7ea9d575033885@RK-Mac.local.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome test+4@gmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=myMZkSg_5FQ2DGCAbtCc">Confirm my account</a></p>
+
+[active_model_serializers] Rendered UserSerializer with ActiveModelSerializers::Adapter::Attributes (1.04ms)
+Completed 201 Created in 198ms (Views: 14.4ms | ActiveRecord: 9.9ms | Allocations: 50373)
+
+
+Started GET "/users/confirmation?confirmation_token=[FILTERED]" for 127.0.0.1 at 2023-11-14 18:58:03 +0530
+Processing by Devise::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"[FILTERED]"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_token" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["confirmation_token", "myMZkSg_5FQ2DGCAbtCc"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-11-14 13:28:03.390118"], ["confirmed_at", "2023-11-14 13:28:03.389602"], ["id", 4]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/users/sign_in
+Completed 302 Found in 15ms (ActiveRecord: 1.6ms | Allocations: 4012)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2023-11-14 18:58:03 +0530
+Processing by Devise::SessionsController#new as HTML
+Completed 200 OK in 3ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 462)
+
+
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateOrganizations (20231114144553)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (21.1ms)[0m  [1m[35mCREATE TABLE "organizations" ("id" bigserial primary key, "name" character varying, "email" character varying, "contact_number" character varying, "address_line1" character varying, "address_line2" character varying, "state" character varying, "city" character varying, "postal_code" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231114144553"]]
+  [1m[36mTRANSACTION (4.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.7ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api/organizations/" for ::1 at 2023-11-14 20:21:20 +0530
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+SyntaxError (/Users/rajesh/External_proje/dhatri_care/app/controllers/api/organizations_controller.rb:49: syntax error, unexpected end, expecting end-of-input):
+  
+app/controllers/api/organizations_controller.rb:49: syntax error, unexpected end, expecting end-of-input
+app/controllers/api/organizations_controller.rb:49: syntax error, unexpected end, expecting end-of-input
+Started GET "/api/organizations/" for ::1 at 2023-11-14 20:21:35 +0530
+Processing by Api::OrganizationsController#index as */*
+Completed 500 Internal Server Error in 15ms (ActiveRecord: 0.0ms | Allocations: 3969)
+
+
+  
+NameError (undefined local variable or method `organization' for #<Api::OrganizationsController:0x007fa535a46be0>
+Did you mean?  organization_params):
+  
+app/controllers/api/organizations_controller.rb:5:in `index'
+Started GET "/api/organizations/" for ::1 at 2023-11-14 20:22:12 +0530
+Processing by Api::OrganizationsController#index as */*
+  [1m[36mOrganization Load (27.0ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations"[0m
+  ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.12ms)
+Completed 200 OK in 72ms (Views: 14.7ms | ActiveRecord: 27.0ms | Allocations: 1996)
+
+
+Started GET "/api/organizations/" for ::1 at 2023-11-14 20:23:06 +0530
+Processing by Api::OrganizationsController#index as */*
+  [1m[36mOrganization Load (0.8ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations"[0m
+  ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.06ms)
+Completed 200 OK in 5ms (Views: 2.4ms | ActiveRecord: 0.8ms | Allocations: 1027)
+
+
+Started GET "/api/organizations/" for ::1 at 2023-11-14 20:23:44 +0530
+Processing by Api::OrganizationsController#index as */*
+  [1m[36mOrganization Load (0.3ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations"[0m
+  ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.07ms)
+Completed 200 OK in 4ms (Views: 2.0ms | ActiveRecord: 0.3ms | Allocations: 1044)
+
+
+Started POST "/api/organizations/" for ::1 at 2023-11-14 20:24:14 +0530
+Processing by Api::OrganizationsController#create as */*
+  Parameters: {"name"=>"test organization", "organization"=>{"name"=>"test organization"}}
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 4.0ms | Allocations: 534)
+
+
+  
+NoMethodError (undefined method `new' for nil:NilClass):
+  
+app/controllers/api/organizations_controller.rb:16:in `create'
+Started POST "/api/organizations/" for ::1 at 2023-11-14 20:24:23 +0530
+Processing by Api::OrganizationsController#create as */*
+  Parameters: {"name"=>"test organization", "organization"=>{"name"=>"test organization"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/organizations_controller.rb:17:in `create'
+  [1m[36mOrganization Create (3.5ms)[0m  [1m[32mINSERT INTO "organizations" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["name", "test organization"], ["created_at", "2023-11-14 14:54:23.675292"], ["updated_at", "2023-11-14 14:54:23.675292"]]
+  ↳ app/controllers/api/organizations_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/organizations_controller.rb:17:in `create'
+[active_model_serializers] Rendered OrganizationSerializer with ActiveModelSerializers::Adapter::Attributes (5.86ms)
+Completed 500 Internal Server Error in 34ms (ActiveRecord: 13.7ms | Allocations: 11019)
+
+
+  
+NoMethodError (undefined method `phone' for #<Organization:0x00007fa535d85798>):
+  
+app/controllers/api/organizations_controller.rb:18:in `create'
+Started POST "/api/organizations/" for ::1 at 2023-11-14 20:24:38 +0530
+Processing by Api::OrganizationsController#create as */*
+  Parameters: {"name"=>"test organization", "organization"=>{"name"=>"test organization"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/organizations_controller.rb:17:in `create'
+  [1m[36mOrganization Create (0.8ms)[0m  [1m[32mINSERT INTO "organizations" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["name", "test organization"], ["created_at", "2023-11-14 14:54:38.733259"], ["updated_at", "2023-11-14 14:54:38.733259"]]
+  ↳ app/controllers/api/organizations_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (6.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/organizations_controller.rb:17:in `create'
+[active_model_serializers] Rendered OrganizationSerializer with ActiveModelSerializers::Adapter::Attributes (0.43ms)
+Completed 201 Created in 37ms (Views: 3.0ms | ActiveRecord: 11.2ms | Allocations: 7225)
+
+
+Started GET "/api/organizations/" for ::1 at 2023-11-14 20:24:49 +0530
+Processing by Api::OrganizationsController#index as */*
+  Parameters: {"name"=>"test organization", "organization"=>{"name"=>"test organization"}}
+  [1m[36mOrganization Load (0.3ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations"[0m
+  ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (1.14ms)
+Completed 200 OK in 29ms (Views: 28.6ms | ActiveRecord: 0.3ms | Allocations: 1149)
+
+
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateRoles (20231114145529)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.4ms)[0m  [1m[35mCREATE TABLE "roles" ("id" bigserial primary key, "name" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231114145529"]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddRefernceToUsers (20231114145926)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.6ms)[0m  [1m[35mALTER TABLE "users" ADD "role_id" bigint[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE INDEX "index_users_on_role_id" ON "users" ("role_id")[0m
+  [1m[35m (17.6ms)[0m  [1m[35mALTER TABLE "users" ADD CONSTRAINT "fk_rails_642f17018b"
+FOREIGN KEY ("role_id")
+  REFERENCES "roles" ("id")
+[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231114145926"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/users/" for ::1 at 2023-11-14 20:31:53 +0530
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+4@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (9.27ms)
+Completed 422 Unprocessable Entity in 44ms (Views: 12.3ms | ActiveRecord: 10.3ms | Allocations: 13474)
+
+
+Started GET "/api/users/" for ::1 at 2023-11-14 20:31:58 +0530
+Processing by Api::UsersController#index as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (37.63ms)
+Completed 500 Internal Server Error in 110ms (ActiveRecord: 2.2ms | Allocations: 7259)
+
+
+  
+ActiveRecord::StatementInvalid (PG::UndefinedColumn: ERROR:  column roles.user_id does not exist
+LINE 1: SELECT "roles".* FROM "roles" WHERE "roles"."user_id" = $1 L...
+                                            ^
+):
+  
+app/controllers/api/users_controller.rb:6:in `index'
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddRefernceToUsers (20231114145926)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (9.1ms)[0m  [1m[35mALTER TABLE "users" DROP CONSTRAINT "fk_rails_642f17018b"[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "users" DROP COLUMN "role_id"[0m
+  [1m[36mActiveRecord::SchemaMigration Destroy (6.0ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20231114145926"]]
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api/users/" for ::1 at 2023-11-14 20:33:39 +0530
+Processing by Api::UsersController#index as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (6.09ms)
+Completed 200 OK in 25ms (Views: 20.9ms | ActiveRecord: 7.0ms | Allocations: 10057)
+
+
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddRefernceToUsers (20231114145926)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.0ms)[0m  [1m[35mALTER TABLE "users" ADD "role_id" bigint[0m
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE INDEX "index_users_on_role_id" ON "users" ("role_id")[0m
+  [1m[35m (2.1ms)[0m  [1m[35mALTER TABLE "users" ADD CONSTRAINT "fk_rails_642f17018b"
+FOREIGN KEY ("role_id")
+  REFERENCES "roles" ("id")
+[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231114145926"]]
+  [1m[36mTRANSACTION (3.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api/users/" for ::1 at 2023-11-14 20:36:42 +0530
+Processing by Api::UsersController#index as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (17.39ms)
+Completed 200 OK in 52ms (Views: 45.6ms | ActiveRecord: 11.3ms | Allocations: 11363)
+
+
+  [1m[36mUser Load (3.6ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mRole Create (1.2ms)[0m  [1m[32mINSERT INTO "roles" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["name", "admin"], ["created_at", "2023-11-14 15:07:39.501660"], ["updated_at", "2023-11-14 15:07:39.501660"]]
+  [1m[36mTRANSACTION (5.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mRole Load (0.3ms)[0m  [1m[34mSELECT "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (5.0ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "role_id" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-11-14 15:08:03.165440"], ["role_id", 1], ["id", 1]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/api/users/" for ::1 at 2023-11-14 20:38:06 +0530
+Processing by Api::UsersController#index as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mRole Load (0.5ms)[0m  [1m[34mSELECT "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[active_model_serializers]   ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (53.01ms)
+Completed 200 OK in 57ms (Views: 51.3ms | ActiveRecord: 5.3ms | Allocations: 9076)
+
+
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBranches (20231114155648)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (18.7ms)[0m  [1m[35mCREATE TABLE "branches" ("id" bigserial primary key, "name" character varying, "email" character varying, "contact_number" character varying, "address_line1" character varying, "address_line2" character varying, "state" character varying, "city" character varying, "postal_code" character varying, "organization_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_branches_on_organization_id" ON "branches" ("organization_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231114155648"]]
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api/users/" for ::1 at 2023-11-14 21:33:58 +0530
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::UsersController#index as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mRole Load (0.6ms)[0m  [1m[34mSELECT "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[active_model_serializers]   ↳ app/controllers/api/users_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (23.11ms)
+Completed 200 OK in 57ms (Views: 50.8ms | ActiveRecord: 4.8ms | Allocations: 13865)
+
+
+Started GET "/api/users/1" for ::1 at 2023-11-14 21:34:14 +0530
+Processing by Api::UsersController#show as */*
+  Parameters: {"email"=>"test+4@gmail.com", "id"=>"1", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mUser Load (5.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:41:in `set_user'
+[active_model_serializers]   [1m[36mRole Load (2.4ms)[0m  [1m[34mSELECT "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[active_model_serializers]   ↳ app/controllers/api/users_controller.rb:11:in `show'
+[active_model_serializers] Rendered UserSerializer with ActiveModelSerializers::Adapter::Attributes (7.11ms)
+Completed 200 OK in 64ms (Views: 26.3ms | ActiveRecord: 8.1ms | Allocations: 1882)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 21:34:33 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+4@gmail.com", "user"=>{"email"=>"test+4@gmail.com"}}
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (6.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+4@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (3.43ms)
+Completed 422 Unprocessable Entity in 95ms (Views: 25.3ms | ActiveRecord: 12.0ms | Allocations: 3313)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 21:34:42 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+5@gmail.com", "user"=>{"email"=>"test+5@gmail.com"}}
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+5@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (0.83ms)
+Completed 422 Unprocessable Entity in 32ms (Views: 1.7ms | ActiveRecord: 1.3ms | Allocations: 2550)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 21:34:56 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+5@gmail.com", "role_id"=>"1", "user"=>{"email"=>"test+5@gmail.com", "role_id"=>"1"}}
+[31mUnpermitted parameter: :role_id[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+5@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (0.59ms)
+Completed 422 Unprocessable Entity in 56ms (Views: 21.3ms | ActiveRecord: 2.2ms | Allocations: 2609)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 21:35:15 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+5@gmail.com", "roles"=>{"id"=>"1"}, "user"=>{"email"=>"test+5@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (2.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+5@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (1.47ms)
+Completed 422 Unprocessable Entity in 34ms (Views: 2.4ms | ActiveRecord: 3.1ms | Allocations: 2551)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-14 21:35:21 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+5@gmail.com", "role"=>{"id"=>"1"}, "user"=>{"email"=>"test+5@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (2.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+5@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (1.14ms)
+Completed 422 Unprocessable Entity in 35ms (Views: 2.5ms | ActiveRecord: 3.7ms | Allocations: 2546)
+
+
+  [1m[36mTRANSACTION (64.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (156.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (13.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/users/" for ::1 at 2023-11-18 11:09:16 +0530
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+5@gmail.com", "role"=>{"id"=>"1"}, "user"=>{"email"=>"test+5@gmail.com"}}
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (2.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+5@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (1.9ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (14.83ms)
+Completed 422 Unprocessable Entity in 104ms (Views: 16.6ms | ActiveRecord: 12.5ms | Allocations: 18842)
+
+
+Started POST "/api/users/" for ::1 at 2023-11-18 11:09:31 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+5@gmail.com", "role_id"=>"1", "user"=>{"email"=>"test+5@gmail.com", "role_id"=>"1"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+5@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mRole Load (2.2ms)[0m  [1m[34mSELECT "roles".* FROM "roles" WHERE "roles"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Create (18.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "created_at", "updated_at", "confirmation_token", "confirmation_sent_at", "role_id") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["email", "test+5@gmail.com"], ["created_at", "2023-11-18 05:39:31.954463"], ["updated_at", "2023-11-18 05:39:31.954463"], ["confirmation_token", "VUYhVwNCzTxtwy-LnAyV"], ["confirmation_sent_at", "2023-11-18 05:39:31.954804"], ["role_id", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  Rendering /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb
+  Rendered /Users/rajesh/.rbenv/versions/2.6.5/lib/ruby/gems/2.6.0/gems/devise-4.8.0/app/views/devise/mailer/confirmation_instructions.html.erb (Duration: 3.6ms | Allocations: 625)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 31.8ms
+Delivered mail 65584e14152f6_d2403fd523e86ad82009d@RK-Mac.local.mail (23.5ms)
+Date: Sat, 18 Nov 2023 11:09:32 +0530
+From: please-change-me-at-config-initializers-devise@example.com
+Reply-To: please-change-me-at-config-initializers-devise@example.com
+To: test+5@gmail.com
+Message-ID: <65584e14152f6_d2403fd523e86ad82009d@RK-Mac.local.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome test+5@gmail.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/users/confirmation?confirmation_token=VUYhVwNCzTxtwy-LnAyV">Confirm my account</a></p>
+
+[active_model_serializers] Rendered UserSerializer with ActiveModelSerializers::Adapter::Attributes (8.95ms)
+Completed 201 Created in 302ms (Views: 51.7ms | ActiveRecord: 27.9ms | Allocations: 41549)
+
+
+Started GET "/users/confirmation?confirmation_token=[FILTERED]" for 127.0.0.1 at 2023-11-18 11:09:34 +0530
+Processing by Devise::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"[FILTERED]"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_token" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["confirmation_token", "VUYhVwNCzTxtwy-LnAyV"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (1.9ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-11-18 05:39:34.516657"], ["confirmed_at", "2023-11-18 05:39:34.516227"], ["id", 5]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3000/users/sign_in
+Completed 302 Found in 15ms (ActiveRecord: 3.0ms | Allocations: 3970)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2023-11-18 11:09:34 +0530
+Processing by Devise::SessionsController#new as HTML
+Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 461)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2023-11-18 11:09:34 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/api/users/" for ::1 at 2023-11-18 11:13:24 +0530
+Processing by Api::UsersController#create as */*
+  Parameters: {"email"=>"test+7@gmail.com", "role"=>{"id"=>"1"}, "user"=>{"email"=>"test+7@gmail.com"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test+7@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/users_controller.rb:17:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with ActiveModel::Errors (0.96ms)
+Completed 422 Unprocessable Entity in 59ms (Views: 2.3ms | ActiveRecord: 4.1ms | Allocations: 11547)
+
+
+Started GET "/api/branch/" for ::1 at 2023-11-18 11:13:49 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/branch"):
+  
+Started GET "/api/organization/" for ::1 at 2023-11-18 11:18:47 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/organization"):
+  
+Started GET "/api/organizations" for ::1 at 2023-11-18 11:18:52 +0530
+Processing by Api::OrganizationsController#index as */*
+  Parameters: {"name"=>"test organization", "organization"=>{"name"=>"test organization"}}
+  [1m[36mOrganization Load (11.8ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations"[0m
+  ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mBranch Load (4.4ms)[0m  [1m[34mSELECT "branches".* FROM "branches" WHERE "branches"."organization_id" = $1[0m  [["organization_id", 1]]
+[active_model_serializers]   ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mBranch Load (2.3ms)[0m  [1m[34mSELECT "branches".* FROM "branches" WHERE "branches"."organization_id" = $1[0m  [["organization_id", 2]]
+[active_model_serializers]   ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (41.29ms)
+Completed 200 OK in 110ms (Views: 87.6ms | ActiveRecord: 25.1ms | Allocations: 12380)
+
+
+Started GET "/api/organizations" for ::1 at 2023-11-18 11:20:09 +0530
+  [1m[35m (2.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::OrganizationsController#index as */*
+  Parameters: {"name"=>"test organization", "organization"=>{"name"=>"test organization"}}
+  [1m[36mOrganization Load (0.5ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations"[0m
+  ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mBranch Load (0.5ms)[0m  [1m[34mSELECT "branches".* FROM "branches" WHERE "branches"."organization_id" = $1[0m  [["organization_id", 1]]
+[active_model_serializers]   ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mBranch Load (0.3ms)[0m  [1m[34mSELECT "branches".* FROM "branches" WHERE "branches"."organization_id" = $1[0m  [["organization_id", 2]]
+[active_model_serializers]   ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (34.98ms)
+Completed 200 OK in 107ms (Views: 86.2ms | ActiveRecord: 9.9ms | Allocations: 16327)
+
+
+Started POST "/api/branches" for ::1 at 2023-11-18 11:20:37 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/api/branches"):
+  
+Started POST "/api/branchs" for ::1 at 2023-11-18 11:21:17 +0530
+  
+ActionController::RoutingError (uninitialized constant Api::BranchsController
+Did you mean?  Api::BranchesController):
+  
+Started POST "/api/branchs" for ::1 at 2023-11-18 11:22:26 +0530
+  [1m[35m (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActionController::RoutingError (No route matches [POST] "/api/branchs"):
+  
+Started POST "/api/branchs" for ::1 at 2023-11-18 11:22:28 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/api/branchs"):
+  
+Started POST "/api/branches" for ::1 at 2023-11-18 11:22:32 +0530
+Processing by Api::BranchesController#create as */*
+  Parameters: {"name"=>"test branch", "organization_id"=>"1", "branch"=>{"name"=>"test branch", "organization_id"=>"1"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/branches_controller.rb:16:in `create'
+  [1m[36mOrganization Load (0.6ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations" WHERE "organizations"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/branches_controller.rb:16:in `create'
+  [1m[36mBranch Create (2.1ms)[0m  [1m[32mINSERT INTO "branches" ("name", "organization_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "test branch"], ["organization_id", 1], ["created_at", "2023-11-18 05:52:32.385286"], ["updated_at", "2023-11-18 05:52:32.385286"]]
+  ↳ app/controllers/api/branches_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/branches_controller.rb:16:in `create'
+[active_model_serializers] Rendered BranchSerializer with ActiveModelSerializers::Adapter::Attributes (2.93ms)
+Completed 201 Created in 132ms (Views: 21.8ms | ActiveRecord: 11.4ms | Allocations: 23007)
+
+
+Started GET "/api/organizations" for ::1 at 2023-11-18 11:22:45 +0530
+Processing by Api::OrganizationsController#index as */*
+  Parameters: {"name"=>"test branch", "organization_id"=>"1", "organization"=>{"name"=>"test branch"}}
+  [1m[36mOrganization Load (1.1ms)[0m  [1m[34mSELECT "organizations".* FROM "organizations"[0m
+  ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mBranch Load (0.3ms)[0m  [1m[34mSELECT "branches".* FROM "branches" WHERE "branches"."organization_id" = $1[0m  [["organization_id", 1]]
+[active_model_serializers]   ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mBranch Load (0.3ms)[0m  [1m[34mSELECT "branches".* FROM "branches" WHERE "branches"."organization_id" = $1[0m  [["organization_id", 2]]
+[active_model_serializers]   ↳ app/controllers/api/organizations_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (25.08ms)
+Completed 200 OK in 32ms (Views: 29.4ms | ActiveRecord: 1.7ms | Allocations: 4388)
+
+
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(4223126016687974655)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreatePatients (20231118055816)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (35.8ms)[0m  [1m[35mCREATE TABLE "patients" ("id" bigserial primary key, "first_name" character varying, "last_name" character varying, "email" character varying, "phone" character varying, "address_line1" character varying, "address_line2" character varying, "state" character varying, "city" character varying, "postal_code" character varying, "age" integer, "height" character varying, "weight" character varying, "parents_name" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231118055816"]]
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (3.5ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(4223126016687974655)[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/api/patients" for ::1 at 2023-11-18 11:39:57 +0530
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+SyntaxError (/Users/rajesh/External_proje/dhatri_care/app/controllers/api/patients_controller.rb:49: syntax error, unexpected end, expecting end-of-input):
+  
+app/controllers/api/patients_controller.rb:49: syntax error, unexpected end, expecting end-of-input
+app/controllers/api/patients_controller.rb:49: syntax error, unexpected end, expecting end-of-input
+Started GET "/api/patients" for ::1 at 2023-11-18 11:40:13 +0530
+Processing by Api::PatientsController#index as */*
+  Parameters: {"name"=>"test branch", "organization_id"=>"1", "patient"=>{}}
+  [1m[36mPatient Load (3.9ms)[0m  [1m[34mSELECT "patients".* FROM "patients"[0m
+  ↳ app/controllers/api/patients_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.14ms)
+Completed 200 OK in 20ms (Views: 9.5ms | ActiveRecord: 6.4ms | Allocations: 3969)
+
+
+Started POST "/api/patients" for ::1 at 2023-11-18 11:40:33 +0530
+Processing by Api::PatientsController#create as */*
+  Parameters: {"first_name"=>"Pat 001", "organization_id"=>"1", "patient"=>{"first_name"=>"Pat 001"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mPatient Create (1.1ms)[0m  [1m[32mINSERT INTO "patients" ("first_name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["first_name", "Pat 001"], ["created_at", "2023-11-18 06:10:34.040896"], ["updated_at", "2023-11-18 06:10:34.040896"]]
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (11.05ms)
+Completed 500 Internal Server Error in 98ms (ActiveRecord: 9.0ms | Allocations: 17306)
+
+
+  
+NoMethodError (undefined method `country' for #<Patient:0x00007fc18182fd08>):
+  
+app/controllers/api/patients_controller.rb:18:in `create'
+Started POST "/api/patients" for ::1 at 2023-11-18 11:40:55 +0530
+Processing by Api::PatientsController#create as */*
+  Parameters: {"first_name"=>"Pat 001", "organization_id"=>"1", "patient"=>{"first_name"=>"Pat 001"}}
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mPatient Create (0.4ms)[0m  [1m[32mINSERT INTO "patients" ("first_name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["first_name", "Pat 001"], ["created_at", "2023-11-18 06:10:55.736071"], ["updated_at", "2023-11-18 06:10:55.736071"]]
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (11.26ms)
+Completed 500 Internal Server Error in 31ms (ActiveRecord: 4.5ms | Allocations: 12301)
+
+
+  
+NoMethodError (undefined method `country' for #<Patient:0x00007fc17cf5ab28>):
+  
+app/controllers/api/patients_controller.rb:18:in `create'
+Started POST "/api/patients" for ::1 at 2023-11-18 11:42:14 +0530
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::PatientsController#create as */*
+  Parameters: {"first_name"=>"Pat 001", "organization_id"=>"1", "patient"=>{"first_name"=>"Pat 001"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mPatient Create (0.7ms)[0m  [1m[32mINSERT INTO "patients" ("first_name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["first_name", "Pat 001"], ["created_at", "2023-11-18 06:12:14.453130"], ["updated_at", "2023-11-18 06:12:14.453130"]]
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (18.21ms)
+Completed 500 Internal Server Error in 97ms (ActiveRecord: 6.6ms | Allocations: 17259)
+
+
+  
+NoMethodError (undefined method `country' for #<Patient:0x00007f7ad3a08e08>):
+  
+app/controllers/api/patients_controller.rb:18:in `create'
+Started POST "/api/patients" for ::1 at 2023-11-18 11:42:32 +0530
+Processing by Api::PatientsController#create as */*
+  Parameters: {"first_name"=>"Pat 001", "organization_id"=>"1", "patient"=>{"first_name"=>"Pat 001"}}
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mPatient Create (0.4ms)[0m  [1m[32mINSERT INTO "patients" ("first_name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["first_name", "Pat 001"], ["created_at", "2023-11-18 06:12:32.716892"], ["updated_at", "2023-11-18 06:12:32.716892"]]
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/patients_controller.rb:17:in `create'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (1.16ms)
+Completed 201 Created in 31ms (Views: 6.8ms | ActiveRecord: 6.8ms | Allocations: 9597)
+
+
+Started GET "/api/patients" for ::1 at 2023-11-18 11:42:38 +0530
+Processing by Api::PatientsController#index as */*
+  Parameters: {"first_name"=>"Pat 001", "organization_id"=>"1", "patient"=>{"first_name"=>"Pat 001"}}
+  [1m[36mPatient Load (0.6ms)[0m  [1m[34mSELECT "patients".* FROM "patients"[0m
+  ↳ app/controllers/api/patients_controller.rb:6:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.85ms)
+Completed 200 OK in 24ms (Views: 23.2ms | ActiveRecord: 0.6ms | Allocations: 1627)
+
+
+Started GET "/api/patients/1" for ::1 at 2023-11-18 11:42:59 +0530
+Processing by Api::PatientsController#show as */*
+  Parameters: {"first_name"=>"Pat 001", "last_name"=>"last_name", "organization_id"=>"1", "id"=>"1", "patient"=>{"first_name"=>"Pat 001", "last_name"=>"last_name"}}
+Completed 500 Internal Server Error in 6ms (ActiveRecord: 0.0ms | Allocations: 1821)
+
+
+  
+NameError (undefined local variable or method `patient' for #<Api::PatientsController:0x007f7ad5827bc8>
+Did you mean?  taint):
+  
+app/controllers/api/patients_controller.rb:41:in `set_patient'
+Started GET "/api/patients/1" for ::1 at 2023-11-18 11:43:38 +0530
+Processing by Api::PatientsController#show as */*
+  Parameters: {"first_name"=>"Pat 001", "last_name"=>"last_name", "organization_id"=>"1", "id"=>"1", "patient"=>{"first_name"=>"Pat 001", "last_name"=>"last_name"}}
+  [1m[36mPatient Load (0.4ms)[0m  [1m[34mSELECT "patients".* FROM "patients" WHERE "patients"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/patients_controller.rb:41:in `set_patient'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (0.52ms)
+Completed 200 OK in 30ms (Views: 2.5ms | ActiveRecord: 6.7ms | Allocations: 8697)
+
+
+Started GET "/api/patients/1" for ::1 at 2023-11-18 11:43:51 +0530
+Processing by Api::PatientsController#show as */*
+  Parameters: {"first_name"=>"Pat 001", "last_name"=>"last_name", "organization_id"=>"1", "id"=>"1", "patient"=>{"first_name"=>"Pat 001", "last_name"=>"last_name"}}
+  [1m[36mPatient Load (0.4ms)[0m  [1m[34mSELECT "patients".* FROM "patients" WHERE "patients"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/patients_controller.rb:41:in `set_patient'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (0.39ms)
+Completed 200 OK in 24ms (Views: 21.7ms | ActiveRecord: 0.4ms | Allocations: 851)
+
+
+Started POST "/api/patients/1" for ::1 at 2023-11-18 11:43:57 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/api/patients/1"):
+  
+Started PATCH "/api/patients/1" for ::1 at 2023-11-18 11:44:05 +0530
+Processing by Api::PatientsController#update as */*
+  Parameters: {"first_name"=>"Pat 001", "last_name"=>"last_name", "organization_id"=>"1", "id"=>"1", "patient"=>{"first_name"=>"Pat 001", "last_name"=>"last_name"}}
+  [1m[36mPatient Load (0.4ms)[0m  [1m[34mSELECT "patients".* FROM "patients" WHERE "patients"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/patients_controller.rb:41:in `set_patient'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/patients_controller.rb:26:in `update'
+  [1m[36mPatient Update (0.4ms)[0m  [1m[33mUPDATE "patients" SET "last_name" = $1, "updated_at" = $2 WHERE "patients"."id" = $3[0m  [["last_name", "last_name"], ["updated_at", "2023-11-18 06:14:05.169059"], ["id", 1]]
+  ↳ app/controllers/api/patients_controller.rb:26:in `update'
+  [1m[36mTRANSACTION (4.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/patients_controller.rb:26:in `update'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (1.0ms)
+Completed 200 OK in 37ms (Views: 2.6ms | ActiveRecord: 5.3ms | Allocations: 2648)
+
+
+Started GET "/api/patients/1" for ::1 at 2023-11-18 11:44:09 +0530
+Processing by Api::PatientsController#show as */*
+  Parameters: {"first_name"=>"Pat 001", "last_name"=>"last_name", "organization_id"=>"1", "id"=>"1", "patient"=>{"first_name"=>"Pat 001", "last_name"=>"last_name"}}
+  [1m[36mPatient Load (0.4ms)[0m  [1m[34mSELECT "patients".* FROM "patients" WHERE "patients"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/patients_controller.rb:41:in `set_patient'
+[active_model_serializers] Rendered PatientSerializer with ActiveModelSerializers::Adapter::Attributes (0.31ms)
+Completed 200 OK in 4ms (Views: 1.1ms | ActiveRecord: 0.4ms | Allocations: 858)
+
+
